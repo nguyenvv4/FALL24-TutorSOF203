@@ -90,3 +90,7 @@ public class UserServlet extends HttpServlet {
         }
     }
 }
+
+// Tạo đối tượng
+// San pham: id, name, price, quantity, category(select option): status
+
