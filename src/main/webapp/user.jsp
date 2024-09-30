@@ -10,17 +10,27 @@
 <html>
 <head>
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<%--<h2>Ho ten la: ${hoTen}</h2>--%>
-<%--<h2>Thong tin user la</h2>--%>
-<%--<h3>id : ${user.id}</h3>--%>
-<%--<h3>name : ${user.name}</h3>--%>
-<%--<h3>address : ${user.address}</h3>--%>
-<%--Cach 2--%>
-<%--<h3>id : ${user.getId()}</h3>--%>
+<form action="/user/add" method="post">
+    <label>id</label>
+    <input type="text" name="id"> <br>
+    <label>name</label>
+    <input type="text" name="name"> <br>
+    <label>address</label>
+    <input type="text" name="address"> <br>
+    <label>age</label>
+    <input type="text" name="age"> <br>
+    <label>status</label>
+    <input type="radio" name="status" value="Doc than"> Doc than
+    <input type="radio" name="status" value="Co nguoi iu"> Co nguoi iu <br>
+    <button type="submit" class="btn btn-success" onclick="return confirm('Ban co muon them khong ?')">Add</button>
+</form>
 
-<table>
+<div>${listUser.size() <=0 ? 'Khong co phan tu nao':''}</div>
+<table class="table">
     <thead>
     <tr>
         <td>id</td>
@@ -28,6 +38,7 @@
         <td>addree</td>
         <td>age</td>
         <td>status</td>
+        <td>Action</td>
     </tr>
     </thead>
     <tbody>
@@ -38,6 +49,10 @@
             <td>${user.address}</td>
             <td>${user.age}</td>
             <td>${user.status}</td>
+            <td><a href="/user/detail?id=${user.id}" class="btn btn-success">Detail</a>
+                <a href="/user/delete?id=${user.id}" class="btn btn-success"
+                   onclick="return confirm('Ban co muon xoa khong ?')">Delete</a></td>
+
         </tr>
     </c:forEach>
     </tbody>
