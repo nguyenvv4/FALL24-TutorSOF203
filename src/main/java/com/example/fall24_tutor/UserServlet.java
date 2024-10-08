@@ -17,11 +17,9 @@ public class UserServlet extends HttpServlet {
 
     ArrayList<User> listUser = new ArrayList<>();
 
-    public UserServlet() {
-        listUser.add(new User("U1", "Nguyen Van", 20, "Ha Noi", "Doc than"));
-        listUser.add(new User("U2", "Nguyen Van", 20, "Ha Noi", "Doc than"));
-        listUser.add(new User("U3", "Nguyen Van", 20, "Ha Noi", "Doc than"));
-    }
+    UserRepository userRepository = new UserRepository();
+
+
 
     /*
     Tao model khachhang(id, name. age, male, status, rank)
@@ -34,30 +32,17 @@ public class UserServlet extends HttpServlet {
         // hien thi thong tin user len giao dien
         String uri = request.getRequestURI();
         if (uri.contains("/UserServlet")) {
-            String name = "Nguyen Van A";
-            request.setAttribute("user", user);
-            request.setAttribute("hoTen", name);
+            listUser = userRepository.getList();
             request.setAttribute("listUser", listUser);
             request.getRequestDispatcher("/user.jsp").forward(request, response);
         } else if (uri.contains("/user/detail")) {
             String id = request.getParameter("id");
-            User userDetail = new User();
-            for (User u : listUser) {
-                if (u.getId().equals(id)) {
-                    userDetail = u;
-                }
-            }
+            User  userDetail = userRepository.detail(id);
             request.setAttribute("userDetail", userDetail);
             request.getRequestDispatcher("/detail.jsp").forward(request, response);
         } else if (uri.contains("/user/delete")) {
             String id = request.getParameter("id");
-            User userDetail = new User();
-            for (User u : listUser) {
-                if (u.getId().equals(id)) {
-                    userDetail = u;
-                }
-            }
-            listUser.remove(userDetail);
+            userRepository.delete(id);
             response.sendRedirect("/UserServlet");
 
         }
@@ -73,24 +58,24 @@ public class UserServlet extends HttpServlet {
             Integer age = Integer.parseInt(request.getParameter("age"));
             String status = request.getParameter("status");
             User user = new User(id, name, age, address, status);
-            listUser.add(user);
+            userRepository.addNew(user);
             response.sendRedirect("/UserServlet");
         } else if (uri.contains("/user/update")) {
             String id = request.getParameter("id");
-            System.out.println("id : " + id);
-            for (User u : listUser) {
-                if (u.getId().contains(id)) {
-                    u.setAge(Integer.parseInt(request.getParameter("age")));
-                    u.setName(request.getParameter("name"));
-                    u.setAddress(request.getParameter("address"));
-                    u.setStatus(request.getParameter("status"));
-                }
+            User userDetail = userRepository.detail(id);
+            if (userDetail != null) {
+                String name = request.getParameter("name");
+                String address = request.getParameter("address");
+                Integer age = Integer.parseInt(request.getParameter("age"));
+                String status = request.getParameter("status");
+                User user = new User(id, name, age, address, status);
+                userRepository.update(user);
+                response.sendRedirect("/UserServlet");
             }
-            response.sendRedirect("/UserServlet");
         }
     }
 }
-
+// nhap vao name => tim kiem theo name
 // Tạo đối tượng
 // San pham: id, name, price, quantity, category(select option): status
 

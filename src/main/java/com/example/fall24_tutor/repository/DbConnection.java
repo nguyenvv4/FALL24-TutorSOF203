@@ -1,4 +1,4 @@
-package com.example.fall24_tutor;
+package com.example.fall24_tutor.repository;
 
 import java.sql.*;
 
